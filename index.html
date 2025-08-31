@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at center, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #ffda79;
+      text-shadow: 0 0 15px #ffda79;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(45deg, #ff6ec7, #845ec2);
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(45deg, #ff9671, #d65db1);
+      transform: scale(1.05);
+    }
+
+    .aura-container {
+      margin-top: 40px;
+    }
+
+    .aura-circle {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto;
+      background: radial-gradient(circle at center, #fff, var(--aura-color, #845ec2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+      box-shadow: 0 0 30px var(--aura-color, #845ec2), 0 0 60px var(--aura-color, #845ec2);
+      animation: pulse 3s infinite;
+      overflow: visible;
+    }
+
+    /* Multi-colored spinning halo */
+    .aura-circle::before,
+    .aura-circle::after {
+      content: "";
+      position: absolute;
+      top: -25px;
+      left: -25px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red);
+      filter: blur(25px);
+      z-index: -1;
+    }
+
+    .aura-circle::before {
+      animation: spin 6s linear infinite;
+    }
+    .aura-circle::after {
+      animation: spin 12s linear infinite reverse;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .aura-number {
+      margin-top: 15px;
+      font-size: 1.5rem;
+      color: #ffda79;
+      text-shadow: 0 0 10px #ffda79;
+    }
+
+    .aura-text {
+      margin-top: 10px;
+      font-size: 1rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Aura Calculator 🔮</h1>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <button onclick="calculateAura()">Check Aura</button>
+
+    <div class="aura-container">
+      <div id="auraCircle" class="aura-circle"></div>
+      <div id="auraNumber" class="aura-number"></div>
+      <div id="auraText" class="aura-text"></div>
+    </div>
+  </div>
+
+  <!-- Sound effects -->
+  <audio id="chime-sound" src="chime.mp3" preload="auto"></audio>
+  <audio id="infinity-sound" src="infinity.mp3" preload="auto"></audio>
+
+  <script>
+    function calculateAura() {
+      const name = document.getElementById("nameInput").value.trim();
+      const auraCircle = document.getElementById("auraCircle");
+      const auraNumber = document.getElementById("auraNumber");
+      const auraText = document.getElementById("auraText");
+
+      const chime = document.getElementById("chime-sound");
+      const infinitySound = document.getElementById("infinity-sound");
+
+      if (!name) {
+        auraCircle.textContent = "";
+        auraNumber.textContent = "";
+        auraText.textContent = "";
+        return;
+      }
+
+      if (name.toLowerCase() === "rohit" || name.toLowerCase() === "rohit bhowmick") {
+        auraCircle.textContent = "∞";
+        auraNumber.textContent = "Infinite Aura!";
+        auraText.textContent = "You have unlocked the ultimate aura.";
+        infinitySound.currentTime = 0;
+        infinitySound.play();  // 🔊 Easter egg sound
+        return;
+      }
+
+      // Calculate aura number
+      let sum = 0;
+      for (let char of name) {
+        sum += char.charCodeAt(0);
+      }
+      const auraValue = sum % 100 + 1;
+
+      // Update visuals
+      auraCircle.textContent = name[0].toUpperCase();
+      auraNumber.textContent = "Aura Level: " + auraValue;
+      auraText.textContent = `"${name}" radiates cosmic energy.`;
+
+      // Random aura color
+      const colors = ["#ff6ec7", "#845ec2", "#ff9671", "#f9f871", "#00c9a7", "#c34a36"];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      auraCircle.style.setProperty("--aura-color", randomColor);
+
+      // Play normal sound
+      chime.currentTime = 0;
+      chime.play();
+    }
+  </script>
+</body>
+</html>
